@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer src="script.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .home-icon {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 28px;
+  color: #007BFF;
+  background: #fff;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  text-decoration: none;
+  z-index: 999;
+  transition: transform 0.2s ease;
+}
+
+.home-icon:hover {
+  transform: scale(1.2);
+  color: #0056b3;
+}
+
+    body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  margin: 60px auto;
+  max-width: 800px;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 10px;
+  color: #222;
+}
+
+p {
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.contact-card {
+  background: #fff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 180px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.contact-card i {
+  font-size: 50px;
+  margin-bottom: 15px;
+  color: #007BFF;
+}
+
+.contact-card span {
+  display: block;
+  font-size: 18px;
+  color: #333;
+}
+
+.contact-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Modal styling */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.modal-content input {
+  width: 80%;
+  padding: 10px;
+  margin: 12px 0;
+  font-size: 16px;
+}
+
+.modal-content button {
+  margin: 5px;
+  padding: 10px 15px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+#puzzle-feedback {
+  margin-top: 10px;
+  color: red;
+}
+
+  </style>
+</head>
+<body>
+    <a href="file:///C:/Users/VAGP/Documents/vagp.html#file:///C:/Users/VAGP/Documents/contact.html" class="home-icon" title="Back to Home">
+  <i class="fas fa-home"></i>
+</a>
+
+  <div class="container">
+    <h1>Get in Touch with Us</h1>
+    <p>Please verify you're human before proceeding to contact.</p>
+
+    <div class="card-container">
+      <div class="contact-card" data-method="call">
+        <i class="fas fa-phone-alt"></i>
+        <span>Call Us</span>
+      </div>
+
+      <div class="contact-card" data-method="whatsapp">
+        <i class="fab fa-whatsapp"></i>
+        <span>WhatsApp</span>
+      </div>
+
+      <div class="contact-card" data-method="instagram">
+        <i class="fab fa-instagram"></i>
+        <span>Instagram</span>
+      </div>
+    </div>
+
+    <!-- Human verification modal -->
+    <div id="puzzle-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Are you human?</h2>
+        <p id="puzzle-question">Loading...</p>
+        <input type="text" id="puzzle-answer" placeholder="Your answer"/>
+        <button id="verify-btn">Verify</button>
+        <button id="cancel-btn">Cancel</button>
+        <p id="puzzle-feedback"></p>
+      </div>
+    </div>
+  </div>
+  <script>
+    const contactCards = document.querySelectorAll('.contact-card');
+const modal = document.getElementById('puzzle-modal');
+const puzzleQuestion = document.getElementById('puzzle-question');
+const puzzleAnswer = document.getElementById('puzzle-answer');
+const verifyBtn = document.getElementById('verify-btn');
+const cancelBtn = document.getElementById('cancel-btn');
+const feedback = document.getElementById('puzzle-feedback');
+
+let currentMethod = '';
+let currentSolution = '';
+
+const puzzles = [
+  { q: "What is 4 + 4?", a: "8" },
+  { q: "Type the word 'contact'", a: "contact" },
+  { q: "What color is a banana?", a: "yellow" },
+  { q: "What comes after 5?", a: "6" },
+  { q: "Spell 'human' backwards.", a: "namuh" }
+];
+
+function showPuzzle(method) {
+  const puzzle = puzzles[Math.floor(Math.random() * puzzles.length)];
+  currentSolution = puzzle.a.toLowerCase();
+  puzzleQuestion.textContent = puzzle.q;
+  puzzleAnswer.value = '';
+  feedback.textContent = '';
+  modal.classList.remove('hidden');
+  currentMethod = method;
+}
+
+contactCards.forEach(card => {
+  card.addEventListener('click', () => {
+    showPuzzle(card.dataset.method);
+  });
+});
+
+verifyBtn.addEventListener('click', () => {
+  const answer = puzzleAnswer.value.trim().toLowerCase();
+  if (answer === currentSolution) {
+    modal.classList.add('hidden');
+    openContactMethod(currentMethod);
+  } else {
+    feedback.textContent = "Incorrect. Please try again.";
+  }
+});
+
+cancelBtn.addEventListener('click', () => {
+  modal.classList.add('hidden');
+});
+
+function openContactMethod(method) {
+  if (method === 'call') {
+    window.location.href = 'tel:+1234567890';
+  } else if (method === 'whatsapp') {
+    window.open('https://wa.me/1234567890', '_blank');
+  } else if (method === 'instagram') {
+    window.open('https://instagram.com/yourcompany', '_blank');
+  }
+}
+
+  </script>
+</body>
+</html>
+

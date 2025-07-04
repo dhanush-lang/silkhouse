@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ball Shape Text Animation</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f8;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.ball {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ffe9ec, #ffd6d9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.1);
+  transform: scale(0);
+  animation: zoomIn 1.2s ease-out forwards;
+}
+
+.animated-text {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease-in-out 1.2s forwards;
+}
+
+@keyframes zoomIn {
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="ball">
+    <p class="animated-text">
+      Welcome to the rich heritage of Tamil Nadu. Discover the timeless beauty of Arni silk sarees, handwoven with love and tradition.
+    </p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
